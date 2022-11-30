@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 
 const basePromptPrefix =
 `
-Make the following text into concise bullet points: 
+Make the following text into 3 concise bullet points: 
 Text:
 `
 
@@ -19,7 +19,7 @@ const generateAction = async (req,res)=>{
         model: 'text-davinci-003',
         prompt: `${basePromptPrefix}${req.body.userInput}\n`,
         temperature: 0.7,
-        max_tokens: 250,
+        max_tokens: 100,
     });
 
     const basePromptOutput = baseCompletion.data.choices.pop();
@@ -28,7 +28,7 @@ const generateAction = async (req,res)=>{
 
     const secondPrompt =
     `
-    Take one important topic from the bullet points below and give 3 references along with the topic name. Give a short summary under each reference.
+    Take one important topic from the bullet points below and give 2 references along with the topic name. Give a short summary under each reference.
     Text: ${req.body.userInput}
     Points: ${basePromptOutput.text}
     Explanation:
@@ -40,7 +40,7 @@ const generateAction = async (req,res)=>{
         model: 'text-davinci-003',
         prompt: `${secondPrompt}`,
         temperature:0.9,
-        max_tokens:1000,
+        max_tokens:100,
     });
 
     //get output
